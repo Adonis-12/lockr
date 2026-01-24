@@ -1,21 +1,7 @@
 const bcrypt = require('bcrypt')
-const pool = require('../db')
+const pool = require('../../db')
 const crypto = require('crypto')
-// get request
-function getResetRequest(req,res){
-    console.log(1)
-    try{if(!req.query || !req.query.token){
-       return res.status(400).json({
-            message : "Invalid Url"
-        })
-    }
-    console.log(2)
-    return res.render("reset-password",{
-            token : req.query.token
-        })}catch(err){
-            console.log(err)
-        }
-}
+
 //post request
 async function postResetRequest(req,res){
   
@@ -66,6 +52,5 @@ async function postResetRequest(req,res){
     }
 }
 module.exports = {
-    getResetRequest,
     postResetRequest
 }

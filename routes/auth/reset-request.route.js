@@ -1,6 +1,6 @@
 const express = require('express')
-const resetRequest = require('../controllers/reset-request.controller')
-const asyncHandler = require('../controllers/asyncHandler')
+const resetRequest = require('../../controllers/auth/reset-request.controller')
+const asyncHandler = require('../../controllers/asyncHandler/asyncHandler')
 const resetRequestRouter = express.Router()
 
 resetRequestRouter.post('/',asyncHandler(resetRequest))

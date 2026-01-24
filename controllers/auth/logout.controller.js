@@ -1,4 +1,4 @@
-const pool = require('../db')
+const pool = require('../../db')
 async function logout(req,res){
     const sessionId = req.cookies.session_id
     await pool.query(

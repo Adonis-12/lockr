@@ -1,5 +1,5 @@
 const crypto = require('crypto')
-const pool = require('../db')
+const pool = require('../../db')
 //  mail transporter
 const nodemailer = require('nodemailer')
 const transporter = nodemailer.createTransport({

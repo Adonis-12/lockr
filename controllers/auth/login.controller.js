@@ -1,16 +1,12 @@
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
-const pool = require('../db')
-
-function getloginForm(req,res){
-    return res.render("login")
-}
+const pool = require('../../db')
 
 async function login(req,res){
     const {email,password} = req.body
     
     const result = await pool.query(
-        'SELECT id,username,password_hash FROM users WHERE email = $1',
+        'SELECT id,password_hash FROM users WHERE email = $1',
         [email]
     )
     if(!result.rowCount){
@@ -18,7 +14,6 @@ async function login(req,res){
             message : "User does not exist"
         })
     }
-    console.log(1)
     const user_id = result.rows[0].id
     const hash = result.rows[0].password_hash
     const matched = await bcrypt.compare(
@@ -33,14 +28,15 @@ async function login(req,res){
         `INSERT INTO sessions(user_id,session_id,expires_at) VALUES ($1,$2,NOW() + '7 days')`,
         [user_id,session_id]
        )
-       console.log(4)
        res.cookie('session_id',session_id,{
         httpOnly: true,
         sameSite: 'lax',
         secure: false,
         maxAge: 7 * 24 * 60 * 60 * 1000
        })
-       res.redirect(`/profile`)
+       return res.status(200).json({
+        message : "Login successful"
+       })
     }else{
         return res.status(400).json({
             message : "Wrong Credentials"
@@ -49,6 +45,5 @@ async function login(req,res){
 
 }
 module.exports = {
-    getloginForm,
     login
 }
