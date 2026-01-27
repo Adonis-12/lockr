@@ -1,6 +1,6 @@
 const express = require('express')
 const LoginRouter = express.Router()
-const asyncHandler = require('../../controllers/asyncHandler/asyncHandler')
+const asyncHandler = require('../../utils/asyncHandler')
 const {login }= require('../../controllers/auth/login.controller')
 const validateInput = require('../../middlewares/validateInput.middleware')
 
