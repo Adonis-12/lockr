@@ -8,7 +8,7 @@ async function builduserProfile(user_id){
         [user_id]
     )
     const user = result.rows[0]
-    return user,tenants
+    return {user,tenants}
 }
 
 module.exports = {

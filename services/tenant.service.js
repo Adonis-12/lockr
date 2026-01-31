@@ -1,5 +1,6 @@
 const pool = require('../db')
 const AppError = require('../utils/errorHandler')
+const ProjectService = require('./project.service')
 async function getAllTenants(user_id){
     const result = await pool.query(
             `SELECT t.tenant_name
@@ -31,7 +32,18 @@ async function createTenant(user_id,tenant_name){
     
 }
 
+async function buildTenantProfile(tenant_id){
+   const projects = await ProjectService.getAllProjects(tenant_id)
+   const result = await pool.query(
+        `SELECT name FROM tenants WHERE tenant_id = $1`,
+        [tenant_id]
+   )
+   const tenantName =  result.rows[0]
+   return {tenantName,projects}
+}
+
 module.exports = {
     getAllTenants,
-    createTenant
+    createTenant,
+    buildTenantProfile
 }

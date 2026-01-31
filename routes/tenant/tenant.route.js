@@ -1,10 +1,13 @@
 const express = require('express')
-const { createTenant,getAllTenants } = require('../../controllers/tenant/tenant.controller')
+const { postTenant,getTenants } = require('../../controllers/tenant/tenant.controller')
 const asyncHandler = require('../../utils/asyncHandler')
 const { authenticatedUsersOnly } = require('../../middlewares/authenticateUser.middleware')
+const { resolveTenant } = require('../../middlewares/resolveTenant.middleware')
+const { requireMembership } = require('../../middlewares/requireMembership.middleware')
 const TenantRouter = express.Router()
     
-TenantRouter.post('/create',asyncHandler(authenticatedUsersOnly),asyncHandler(createTenant))
-TenantRouter.get('/',asyncHandler(authenticatedUsersOnly),asyncHandler(getAllTenants))
+TenantRouter.post('/create',asyncHandler(authenticatedUsersOnly),asyncHandler(postTenant))
+TenantRouter.get('/',asyncHandler(authenticatedUsersOnly),asyncHandler(getTenants))
+TenantRouter.get('/:tenantId',asyncHandler(authenticatedUsersOnly),asyncHandler(resolveTenant),asyncHandler(requireMembership))
 
 module.exports = TenantRouter

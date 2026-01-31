@@ -1,5 +1,5 @@
 const pool = require('../../db')
-const { getAllTenants, createTenant } = require('../../services/tenant.service')
+const { getAllTenants, createTenant, buildTenantProfile } = require('../../services/tenant.service')
 
 async function getTenants(req,res){
    const {user_id} = req.body
@@ -16,8 +16,16 @@ async function postTenant(req,res){
         message  : "TENANT_CREATED_SUCCESSFULLY"
     })
 }
+async function getTenantProfile(req,res){
+    const {tenantId} = req.params
+    const data = await buildTenantProfile(tenantId)
+    res.status(200).json({
+        data : data
+    })
+}
 
 module.exports = {
-    getAllTenants,
-    createTenant
+    getTenants,
+    postTenant,
+    getTenantProfile
 }
