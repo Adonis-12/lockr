@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const crypto = require('crypto')
-const pool = require('../../db')
+const pool = require('../db')
 const AppError = require('../utils/errorHandler')
 
 
@@ -21,6 +21,7 @@ async function registerUser(name,email,password){
 }
 
 async function loginUser(email,password){
+    console.log(1)
      const result = await pool.query(
         'SELECT id,password_hash FROM users WHERE email = $1',
         [email]
@@ -34,6 +35,7 @@ async function loginUser(email,password){
         password,
         hash
     )
+    console.log(2)
     if(matched === true){
        const session_id =crypto.randomBytes(32).toString('hex') // random session string
        try{
@@ -41,18 +43,14 @@ async function loginUser(email,password){
             `INSERT INTO sessions(user_id,session_id,expires_at) VALUES ($1,$2,NOW() + '7 days')`,
             [user_id,session_id]
            )
+           console.log(3)
        }catch(err){
             if(err.code == "23505"){
                 throw new AppError("SOMETHING_WENT_WRONG",500)
             }
        }
-       res.cookie('session_id',session_id,{
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: false,
-        maxAge: 7 * 24 * 60 * 60 * 1000
-       })
-       return true
+       console.log(4)
+       return {session_id}
     }else{
         throw new AppError("WRONG_CREDENTIALS",403)
     }
@@ -62,12 +60,7 @@ async function logoutUser(sessionId){
         `DELETE FROM sessions WHERE session_id = $1`,
         [sessionId]
     )
-    res.clearCookie('session_id',{
-       httpOnly: true,
-        sameSite: 'lax',
-        secure: false,
-        maxAge: 7 * 24 * 60 * 60 * 1000
-    })
+   
     return 
 }
 

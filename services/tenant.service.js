@@ -34,8 +34,9 @@ async function createTenant(user_id,tenant_name){
 
 async function buildTenantProfile(tenant_id){
    const projects = await ProjectService.getAllProjects(tenant_id)
+   console.log(3)
    const result = await pool.query(
-        `SELECT name FROM tenants WHERE tenant_id = $1`,
+        `SELECT tenant_name FROM tenants WHERE id = $1`,
         [tenant_id]
    )
    const tenantName =  result.rows[0]

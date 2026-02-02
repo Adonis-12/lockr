@@ -19,7 +19,9 @@ async function guestUsersOnly(req,res,next){
 
 async function authenticatedUsersOnly(req,res,next){
     if(!req.cookies || !req.cookies.session_id){
-            return res.redirect('/login')
+            return res.status(401).json({
+                message : "Unauthorized"
+            })
     }
     console.log(1)
         const sessionCookie = req.cookies.session_id

@@ -3,7 +3,7 @@ const AppError = require('../utils/errorHandler')
 async function resolveTenant(req,res,next){
     const {tenantId} = req.params
     const result = await pool.query(
-        'SELECT tenant_id FROM tenants WHERE id = $1',
+        'SELECT id FROM tenants WHERE id = $1',
         [tenantId]
     )
     if(!result.rowCount){
@@ -12,6 +12,7 @@ async function resolveTenant(req,res,next){
     req.tenant = {
         id : tenantId
     }
+    console.log('here')
     next()
 }
 

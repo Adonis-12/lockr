@@ -11,6 +11,7 @@ async function requireMembership(req,res,next){
     if(!result.rowCount){
         throw new AppError(401,"USER_UNAUTHORIZED")
     }
+    console.log('here2')
     next()
 }
 
