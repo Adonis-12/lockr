@@ -18,7 +18,7 @@ async function createTenant(user_id,tenant_name){
     const client = await pool.connect()
     try{
         await client.query(`BEGIN`)
-        const result =  await client.query(`INSERT INTO tenants(tenant_name) VALUES($1) RETURNING id`,[tenantName])
+        const result =  await client.query(`INSERT INTO tenants(tenant_name) VALUES($1) RETURNING id`,[tenant_name])
         const tenantId = result.rows[0].id
         await client.query(`INSERT INTO memberships(user_id,tenant_id,role) VALUES($1,$2,'owner')`,[user_id,tenantId])
         await client.query(`COMMIT`)
@@ -29,7 +29,6 @@ async function createTenant(user_id,tenant_name){
     }finally{
         client.release()
     }
-    
 }
 
 async function buildTenantProfile(tenant_id){
