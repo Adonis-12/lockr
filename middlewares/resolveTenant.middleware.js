@@ -1,7 +1,9 @@
 const pool = require('../db')
 const AppError = require('../utils/errorHandler')
 async function resolveTenant(req,res,next){
+    console.log(req.params)
     const {tenantId} = req.params
+    console.log(tenantId)
     const result = await pool.query(
         'SELECT id FROM tenants WHERE id = $1',
         [tenantId]

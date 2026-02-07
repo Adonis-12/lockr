@@ -1,14 +1,12 @@
-const pool = require('../../db')
+const AuthService = require('../../services/auth.service')
 async function logout(req,res){
     const sessionId = req.cookies.session_id
-    await logoutUser(sessionId)
-    res.clearCookie('session_id',{
-       httpOnly: true,
-        sameSite: 'lax',
-        secure: false,
-        maxAge: 7 * 24 * 60 * 60 * 1000
-    })
-    return res.status(204)
+    await AuthService.logoutUser(sessionId)
+    res.clearCookie('session_id')
+    console.log('here')
+    return res.status(204).end()
 }
 
-module.exports = logout
+module.exports = {
+    logout
+}

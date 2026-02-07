@@ -3,7 +3,7 @@ const router = express.Router()
 const loginRoute = require('./login.route')
 const registerRoute = require('./login.route')
 const resetPasswordRoute = require('./login.route')
-const logoutRoute = require('./login.route')
+const logoutRoute = require('./logout.route')
 const resetRequestRoute = require('./login.route')
 
 router.use('/login',loginRoute)
