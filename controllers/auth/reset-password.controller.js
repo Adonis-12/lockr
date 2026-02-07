@@ -20,7 +20,7 @@ async function postResetRequest(req,res){
             message : "Invalid Request"
         })
     }
-    const expiry = result.rows[0].expiry
+    const expiry = result.rows[0].expiry_at
     const userId = result.rows[0].user_id
     if(new Date(expiry) < new Date()){
         return res.send("Please try again")
@@ -48,7 +48,7 @@ async function postResetRequest(req,res){
         await client.query(
             `DELETE FROM password_resets WHERE expiry_at < NOW()`
         )
-        client.release
+        client.release()
     }
 }
 module.exports = {
